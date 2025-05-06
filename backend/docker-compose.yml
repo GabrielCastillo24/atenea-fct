@@ -1,0 +1,11 @@
+services:
+  mariadb:
+    image: mariadb:latest
+    container_name: mariadb-atenea
+    environment:
+      MYSQL_ROOT_PASSWORD: atenea-fct
+      MYSQL_DATABASE: atenea
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mariadb:/var/lib/mysql
