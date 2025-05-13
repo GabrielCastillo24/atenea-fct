@@ -1,0 +1,43 @@
+services:
+  backend:
+    build:
+      context: ./backend  # Carpeta con Dockerfile y app Spring Boot
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"  # Expone el backend en localhost:8080
+    depends_on:
+      - mariadb
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/atenea
+      SPRING_DATASOURCE_USERNAME: atenea
+      SPRING_DATASOURCE_PASSWORD: password
+    networks:
+      - atenea
+
+  frontend:
+    build:
+      context: ./frontend  # Carpeta con Dockerfile y app Vue/Vite
+      dockerfile: Dockerfile
+    ports:
+      - "8081:80"  # Expone el frontend en localhost:5173
+    depends_on:
+      - backend
+    networks:
+      - atenea
+
+  mariadb:
+    image: mariadb:11
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: rootpassword
+      MARIADB_DATABASE: atenea
+      MARIADB_USER: atenea
+      MARIADB_PASSWORD: password
+    ports:
+      - "3306:3306"  # Opcional si quieres acceso externo a la base
+    volumes:
+      - ./mariadb_data:/var/lib/mysql
+    networks:
+      - atenea
+networks:
+  atenea:

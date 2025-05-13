@@ -1,0 +1,14 @@
+services:
+  mariadb:  # Servicio para MariaDB
+    image: mariadb:11  # Imagen oficial de MariaDB, puedes ajustar la versión si lo necesitas
+    restart: unless-stopped  # Reinicia automáticamente el contenedor si se detiene
+    environment:
+      # Variables de entorno usadas por MariaDB para inicializar la base de datos
+      MARIADB_ROOT_PASSWORD: password  # Contraseña para el usuario root
+      MARIADB_DATABASE: atenea  # Nombre de la base de datos a crear al inicio
+      MARIADB_USER: atenea  # Usuario a crear
+      MARIADB_PASSWORD: password  # Contraseña del usuario creado
+    ports:
+      - "3306:3306"  # Expone el puerto de MariaDB al host local (opcional si solo se comunica con la app)
+    volumes:
+      - ./mariadb:/var/lib/mysql

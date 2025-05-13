@@ -1,20 +1,35 @@
-# Dockerfile
-FROM node:21
+# Etapa 1: Compilar la aplicación con Node.js
+FROM node:lts-alpine AS builder
 
-# Set working directory
-WORKDIR /
+WORKDIR /app
 
-# Copiamos solo los archivos de dependencias para aprovechar la cache
+# Copiar archivos necesarios
 COPY package*.json ./
-
-# Instalamos dependencias
-RUN npm install
-
-# Copiamos el resto del proyecto
+COPY vite.config.* ./
 COPY . .
 
-# Exponemos el puerto de desarrollo de Vite (por defecto)
-EXPOSE 5173
+# Instalar dependencias
+RUN npm ci
 
-# Comando por defecto: iniciar servidor de desarrollo
-CMD ["npm", "run", "dev"]
+# Compilar el proyecto
+RUN npm run build
+
+# ------------------------------------------------
+
+# Etapa 2: Imagen final con NGINX para servir archivos estáticos
+FROM nginx:stable-alpine AS production
+
+# Remover contenido por defecto
+RUN rm -rf /usr/share/nginx/html/*
+
+# Copiar archivos construidos desde el builder
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+# Copiar configuración personalizada de NGINX para apps SPA
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Exponer puerto 80
+EXPOSE 80
+
+# Iniciar NGINX en primer plano
+CMD ["nginx", "-g", "daemon off;"]
