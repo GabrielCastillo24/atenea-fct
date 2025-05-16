@@ -62,6 +62,8 @@
 
 
 <script>
+import axios from 'axios';
+
 export default {
   name: 'RegistroComponent',
   data() {
@@ -94,18 +96,18 @@ export default {
         }
       }
 
-      // Validación: contraseñas coinciden
+      // Validación de contraseñas si coinciden
       if (this.form.contrasena !== this.form.contrasena2) {
         this.error = 'Las contraseñas no coinciden.';
         return;
       }
 
-      // Construir el JSON excluyendo "contrasena2"
+      // Construir el JSON excluyendo 
       const payload = { ...this.form };
       delete payload.contrasena2;
+      delete payload.codigoPostal;
 
-      // Enviar a tu API (ajusta la URL a tu backend real)
-      axios.post('http://localhost:3000/api/registro', payload)
+      axios.post('http://localhost:8080/registro/registrar-usuario', payload)
         .then(response => {
           console.log('Usuario registrado:', response.data);
           this.borrarTodo();
@@ -114,7 +116,7 @@ export default {
           console.error('Error al registrar:', error);
           this.error = 'Error al registrar el usuario.';
         });
-      // Limpieza tras éxito (opcional)
+      // Limpieza tras éxito 
       this.borrarTodo();
  
     },
