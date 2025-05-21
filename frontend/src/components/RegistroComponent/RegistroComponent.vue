@@ -107,7 +107,7 @@ export default {
       delete payload.contrasena2;
       delete payload.codigoPostal;
 
-      axios.post('http://localhost:8080/registro/registrar-usuario', payload)
+      axios.post('http://127.0.0.1:8080/api/auth/registro', payload)
         .then(response => {
           console.log('Usuario registrado:', response.data);
           this.borrarTodo();
