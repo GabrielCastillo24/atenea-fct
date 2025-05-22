@@ -5,10 +5,9 @@ import com.atenea.backend.dto.AutenticacionResponseDto;
 import com.atenea.backend.service.AutenticacionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -23,5 +22,20 @@ public class AutenticacionController {
     ) {
         return ResponseEntity.ok(
                 autenticacionService.autenticarUsuario(autenticacionRequestDto));
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<AutenticacionResponseDto> refreshToken(
+            @RequestParam UUID refreshToken
+    ) {
+        AutenticacionResponseDto response =
+                autenticacionService.renovarToken(refreshToken);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> revokeToken(@RequestParam UUID refreshToken) {
+        autenticacionService.revocarRefreshToken(refreshToken);
+        return ResponseEntity.noContent().build();
     }
 }
