@@ -49,6 +49,9 @@ Esta aplicación ofrece una experiencia de compra completa y eficiente para el u
 
 ---
 
+## ✍️ Autor
+Desarrollado por [Gabriel Antonio Castillo Linares ](https://github.com/GabrielCastillo24)
+---
 ## 🚀 Instalación y Uso
 
 1. Clona el repositorio:
