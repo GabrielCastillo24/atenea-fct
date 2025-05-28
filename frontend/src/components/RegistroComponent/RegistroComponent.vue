@@ -103,7 +103,7 @@ export default {
       delete payload.contrasena2;
       delete payload.codigoPostal;
 
-      axios.post('http://127.0.0.1:8080/api/auth/registro', payload)
+      axios.post('/api/auth/registro', payload)
         .then(response => {
           console.log('Usuario registrado:', response.data);
           this.borrarTodo();
@@ -113,7 +113,6 @@ export default {
           console.error('Error al registrar:', error);
           this.error = 'Error al registrar el usuario.';
         });
-      // Limpieza tras éxito 
       this.borrarTodo();
  
     },

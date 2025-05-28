@@ -16,10 +16,7 @@
       </div>
 
       <div class="botones">
-        <button 
-          type="submit"
-          title="Iniciar Sesion"
-        >
+        <button type="submit" title="Iniciar Sesion">
           Iniciar Sesión
         </button>
       </div>
@@ -43,7 +40,7 @@ export default {
     };
   },
   methods: {
-    iniciarSesion() {
+    async iniciarSesion() {
       this.error = '';
 
       // Validar campos obligatorios
@@ -52,21 +49,38 @@ export default {
         return;
       }
 
-  // Crear JSON a enviar
-  const payload = {
-    correo: this.form.correo,
-    contrasena: this.form.contrasena
-  };
+      // Crear JSON a enviar
+      const payload = {
+        correo: this.form.correo,
+        contrasena: this.form.contrasena
+      };
 
-  try {
-    const response = axios.post('/login', payload);
-    console.log('Respuesta del servidor:', response.data);
-    // Aquí puedes manejar el éxito, por ejemplo:
-    // this.token = response.data.token; o redirigir al usuario
-  } catch (error) {
-    console.error('Error al iniciar sesión:', error);
-    this.error = 'Credenciales incorrectas o error de conexión.';
-  }
+      try {
+        const response = await axios.post('/api/auth/login', payload);
+        console.log('Respuesta del servidor:', response.data);
+        const { token, refreshToken } = response.data; // Desestructuramos para obtener ambos
+        if (token) {
+          localStorage.setItem('jwt_token', token);
+          // Opcional pero recomendado: guardar también el refreshToken
+          if (refreshToken) {
+            localStorage.setItem('refresh_token', refreshToken);
+          }
+
+          // Configuramos el token en la instancia de Axios para futuras peticiones
+          axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+          this.$router.push('/inicio'); // O la ruta a la que quieras redirigir
+        } else {
+          this.error = 'No se recibió el token de sesión.';
+        }
+      } catch (error) {
+        console.error('Error al iniciar sesión:', error);
+        if (error.response && error.response.status === 401) { // Asumiendo que 401 es no autorizado
+          this.error = 'Correo o contraseña incorrectos.';
+        } else {
+          this.error = 'Error de conexión o el servidor no está disponible.';
+        }
+      }
     },
 
   }
@@ -109,7 +123,7 @@ export default {
 }
 
 .login-form input {
-  width: 90%;
+  width: 100%;
   padding: 0.75rem;
   border: 1.2px solid #ccc;
   border-radius: 8px;
