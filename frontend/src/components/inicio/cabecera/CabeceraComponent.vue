@@ -37,6 +37,9 @@ export default {
 
 <style scoped>
 .cabecera {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -44,7 +47,7 @@ export default {
   padding: 1rem 2rem;
   color: #D9AF62;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
-  flex-wrap: wrap; 
+  flex-wrap: wrap;
 }
 
 .logo img {

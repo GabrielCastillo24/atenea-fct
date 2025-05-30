@@ -52,6 +52,7 @@ export default {
   color: white;
   padding: 2rem 1rem 1rem;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  
 }
 
 .contenido {
