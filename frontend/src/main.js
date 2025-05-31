@@ -23,10 +23,13 @@ if (initialToken) {
 const logoutUser = () => {
   console.log('Cerrando sesión y redirigiendo al login.');
 
+  const refreshToken = localStorage.getItem('refresh_token');
   const logoutAPIUrl = `/api/auth/logout`; // Relativo a baseURL
-  const response = axios.get(logoutAPIUrl, {
-    params: { refreshToken: refreshToken }
-  });
+  if (refreshToken != null) {
+      const response = axios.get(logoutAPIUrl, {
+      params: { refreshToken: refreshToken }
+    });
+  }
 
   localStorage.removeItem('jwt_token');
   localStorage.removeItem('refresh_token');

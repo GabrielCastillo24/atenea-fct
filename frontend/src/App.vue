@@ -5,8 +5,6 @@ import RegistroComponent from './components/RegistroComponent/RegistroComponent.
 </script>
 
 <template>
-
   <router-view></router-view>
-
 </template>
 
