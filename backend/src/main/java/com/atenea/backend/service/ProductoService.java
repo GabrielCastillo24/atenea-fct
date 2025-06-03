@@ -19,6 +19,7 @@ public class ProductoService {
 
         return productos.stream()
                 .map(producto -> new ProductosDto(
+                        producto.getId(),
                         producto.getNombre(),
                         producto.getDescripcion(),
                         producto.getPrecio(),

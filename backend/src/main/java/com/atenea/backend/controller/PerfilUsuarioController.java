@@ -19,11 +19,9 @@ public class PerfilUsuarioController {
     private final UsuarioMapper usuarioMapper;
 
     @GetMapping("/me")
-    public ResponseEntity<PerfilUsuarioDto> getPerfilUsuario(
-            final Authentication authentication) {
+    public ResponseEntity<PerfilUsuarioDto> getPerfilUsuario(final Authentication authentication) {
 
-        final var usuario =
-                usuarioService.getUserByCorreo(authentication.getName());
+        final var usuario = usuarioService.getUserByCorreo(authentication.getName());
 
         return ResponseEntity.ok(usuarioMapper.toPerfilUsuarioDto(usuario));
     }
