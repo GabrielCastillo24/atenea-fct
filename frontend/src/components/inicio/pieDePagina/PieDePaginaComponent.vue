@@ -5,11 +5,6 @@
         <img :src="iconoAtenea" alt="Logo Atenea" />
       </div> 
       
-      <nav class="enlaces">
-        <a href="">Inicio</a>
-        <a href="">Perfil</a>
-        <a href="">Contacta</a>
-      </nav>
       
       <div class="iconos">
         <a href="https://github.com/GabrielCastillo24/atenea-fct" target="_blank" rel="noopener">

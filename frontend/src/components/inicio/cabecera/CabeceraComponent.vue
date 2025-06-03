@@ -5,9 +5,8 @@
         <img :src="iconoAtenea" alt="Logo Atenea" />
       </div>
 
-      <div class="barra-busqueda">
-        <input type="text" placeholder="Buscar..." />
-        <button title="Buscar">Buscar</button>
+      <div class="titulo">
+        <h1>Atenea</h1>
       </div>
 
       <div class="iconos">
@@ -16,24 +15,25 @@
       </div>
     </header>
 
-
+    <!-- Fondo del carrito -->
     <transition name="desvanecer">
       <div v-if="mostrarCarrito" class="fondo-oscuro" @click="cerrarCarrito"></div>
     </transition>
 
-  
+    <!-- Carrito lateral -->
     <transition name="deslizar">
       <div v-if="mostrarCarrito" class="carrito-lateral">
         <button class="boton-cerrar" @click="cerrarCarrito">✕</button>
-        <h2>Carrito de Compras</h2>
+        <CarritoComponent />
       </div>
     </transition>
 
+  
     <transition name="desvanecer">
       <div v-if="mostrarMenuUsuario" class="fondo-transparente" @click="cerrarMenuUsuario"></div>
     </transition>
 
-    
+    <!-- Menú usuario lateral -->
     <transition name="deslizar">
       <div v-if="mostrarMenuUsuario" class="menu-usuario-lateral">
         <button class="boton-cerrar" @click="cerrarMenuUsuario">✕</button>
@@ -43,6 +43,20 @@
         </ul>
       </div>
     </transition>
+
+   
+    <transition name="desvanecer">
+      <div v-if="mostrarPerfil" class="fondo-oscuro" @click="cerrarPerfil"></div>
+    </transition>
+
+
+    <transition name="deslizar">
+      <div v-if="mostrarPerfil" class="panel-perfil">
+        <button class="boton-cerrar" @click="cerrarPerfil">✕</button>
+        <PerfilComponent />
+        <PedidosComponent />
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -50,29 +64,44 @@
 import iconoAtenea from '../../../assets/img/iconoAtenea.png'
 import iconoUsuario from '../../../assets/img/usuario.png'
 import iconoCarrito from '../../../assets/img/carrito.png'
-import router from '../../../router'; // Tu instancia de Vue Router
+import CarritoComponent from '../carrito/CarritoComponent.vue';
+import PerfilComponent from '../perfil/PerfilComponent.vue';
+import PedidosComponent from '../pedidos/PedidosComponent.vue';
+import router from '../../../router';
 import axios from 'axios';
+
 
 export default {
   name: 'CabeceraComponent',
+  components: {
+    CarritoComponent,
+    PerfilComponent,
+    PedidosComponent
+
+  },
   data() {
     return {
       iconoAtenea,
       iconoUsuario,
       iconoCarrito,
       mostrarCarrito: false,
-      mostrarMenuUsuario: false
+      mostrarMenuUsuario: false,
+      mostrarPerfil: false 
     }
   },
   methods: {
     cerrarCarrito() {
       this.mostrarCarrito = false
     },
+    cerrarPerfil() {
+      this.mostrarPerfil = false;
+    },
     cerrarMenuUsuario() {
       this.mostrarMenuUsuario = false
     },
     irAPerfil() {
-      alert('Ir al perfil')
+      this.mostrarPerfil = true;
+      this.mostrarMenuUsuario = false; 
     },
     cerrarSesion() {
       try {
@@ -99,8 +128,10 @@ export default {
 
 <style scoped>
 .cabecera {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   z-index: 1000;
   display: flex;
   justify-content: space-between;
@@ -115,42 +146,11 @@ export default {
 .logo img {
   height: 70px;
 }
-
-.barra-busqueda {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-  max-width: 600px;
+.titulo {
+  flex-grow: 1;
+  text-align: center;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
-
-.barra-busqueda input {
-  flex: 1;
-  min-width: 200px;
-  padding: 0.5rem 1rem;
-  border: 2px solid #8C5B1F;
-  border-radius: 5px;
-  background-color: #fff;
-  color: #260B01;
-}
-
-.barra-busqueda button {
-  background-color: #D9AF62;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
-  color: #260B01;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.barra-busqueda button:hover {
-  background-color: #8C5B1F;
-  color: white;
-}
-
 .iconos {
   display: flex;
   gap: 1rem;
@@ -193,11 +193,25 @@ export default {
   right: 0;
   width: 50%;
   height: 100%;
-  background-color: #fff;
+  background-color: #F2F0E9;
   z-index: 1000;
   padding: 1rem;
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.4);
   overflow-y: auto;
+}
+
+.panel-perfil {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 70%;
+  height: 100%;
+  background-color: #F2F0E9;
+  z-index: 1000;
+  padding: 2rem;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.4);
+  overflow-y: auto;
+  font-family: Arial, sans-serif;
 }
 
 .menu-usuario-lateral {
@@ -206,7 +220,7 @@ export default {
   right: 0;
   width: 220px;
   height: auto;
-  background-color: #fff;
+  background-color: #F2F0E9;
   z-index: 1000;
   padding: 1rem;
   box-shadow: -2px 0 5px rgba(0, 0, 0, 0.4);

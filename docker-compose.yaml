@@ -6,7 +6,8 @@ services:
     ports:
       - "8080:8080"  # Expone el backend en localhost:8080
     depends_on:
-      - mariadb
+      mariadb:
+        condition: service_healthy
     environment:
       SPRING_DATASOURCE_URL: jdbc:mariadb://mariadb:3306/atenea
       SPRING_DATASOURCE_USERNAME: atenea
@@ -33,6 +34,12 @@ services:
       MARIADB_DATABASE: atenea
       MARIADB_USER: atenea
       MARIADB_PASSWORD: password
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
     ports:
       - "3306:3306"  # Opcional si quieres acceso externo a la base
     volumes:

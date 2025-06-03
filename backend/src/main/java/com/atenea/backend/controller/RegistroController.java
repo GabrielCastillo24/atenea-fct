@@ -28,6 +28,7 @@ public class RegistroController {
         final var usuarioRegistrado = registroUsuarioService
                 .registroUsuario(usuarioRegistroMapper.toEntity(registroRequestDto));
 
+
         return ResponseEntity.ok(
                 usuarioRegistroMapper.toRegistroResponseDto(usuarioRegistrado)
         );

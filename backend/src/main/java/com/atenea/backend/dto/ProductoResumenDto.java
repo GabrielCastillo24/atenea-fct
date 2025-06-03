@@ -2,11 +2,10 @@ package com.atenea.backend.dto;
 
 import java.math.BigDecimal;
 
-public record ProductosDto(
-        Integer Id,
+public record ProductoResumenDto(
+        Integer id,
         String nombre,
         String descripcion,
         BigDecimal precio,
         String urlImg
-) {
-}
+) {}

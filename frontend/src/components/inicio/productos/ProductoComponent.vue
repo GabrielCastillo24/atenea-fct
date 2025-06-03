@@ -6,14 +6,14 @@
       :key="producto.id"
     >
       <img
-       :src="imagen"
+       :src="producto.urlImg"
         alt="Imagen del producto"
         class="imagen-producto"
       />
       <div class="contenido-producto">
         <h2 class="nombre-producto">{{ producto.nombre }}/ {{ producto.descripcion  }}</h2>
-        <p class="precio-producto">{{ producto.precio }} €</p>
-        <button class="añadir-carrito">Añadir al carrito</button>
+        <p class="precio-producto"> Precio : {{ producto.precio }} €</p>
+        <button class="añadir-carrito" @click="AñadirAlCarrito(producto)">Añadir al carrito</button>
       </div>
     </div>
   </div>
@@ -49,6 +49,27 @@ export default {
       } catch (error) {
         console.error('Error al obtener los productos:', error);
       }
+    },
+    AñadirAlCarrito(producto) {
+      const data = {
+        idProducto: producto.Id,  
+        cantidad: 1
+      };
+
+      axios.post('api/carrito/agregar', data, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+      .then(response => {
+        console.log('Producto añadido al carrito:', response.data);
+      })
+      .catch(error => {
+        console.error('Error al añadir al carrito:', error);
+        if (error.response) {
+          console.error('Mensaje del backend:', error.response.data);
+        }
+      });
     }
   },
 };
@@ -56,19 +77,23 @@ export default {
 
 <style scoped>
 .contenedor-producto {
+  margin-top: 100px;
   display: flex;
-  justify-content: center;
   flex-wrap: wrap;
-  gap:10px;
+  gap: 10px;
   padding: 1rem;
-  justify-content: flex-start;
+  justify-content: center;
 }
 
 .tarjeta-producto {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   background-color: #fff;
   border: 1.5px solid #D9AF62;
   padding: 1rem;
   width: 220px;
+  height: 340px; 
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -86,7 +111,12 @@ export default {
 }
 
 .contenido-producto {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   text-align: center;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 
 .nombre-producto {
@@ -94,6 +124,7 @@ export default {
   font-weight: 600;
   color: #260B01;
   margin-bottom: 0.3rem;
+  min-height: 2.5rem; 
 }
 
 .precio-producto {
@@ -112,6 +143,7 @@ export default {
   cursor: pointer;
   font-weight: 600;
   transition: background-color 0.3s ease;
+  margin-top: auto; /* Empuja el botón al final de la tarjeta */
 }
 
 .añadir-carrito:hover {
@@ -119,3 +151,4 @@ export default {
   color: #fff;
 }
 </style>
+
