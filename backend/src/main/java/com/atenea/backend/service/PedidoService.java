@@ -14,7 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
-
+/**
+ * Servicio para gestionar operaciones de pedidos
+ */
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -28,7 +30,10 @@ public class PedidoService {
     private final PedidoMapper pedidoMapper;
 
     /**
-     * Crear un pedido a partir del carrito actual del usuario
+     * Crea un nuevo pedido a partir del carrito actual del usuario
+     * @param idUsuario UUID del usuario que realiza el pedido
+     * @param dto DTO con información del pedido (método de pago)
+     * @return PedidoDto con el pedido creado y sus productos
      */
     @Transactional
     public PedidoDto crearPedido(UUID idUsuario, CrearPedidoDto dto) {
@@ -83,7 +88,10 @@ public class PedidoService {
     }
 
     /**
-     * Obtener todos los pedidos de un usuario
+     * Obtiene todos los pedidos de un usuario con paginación
+     * @param idUsuario UUID del usuario propietario de los pedidos
+     * @param pageable Configuración de paginación
+     * @return Page<PedidoDto> con los pedidos del usuario ordenados por fecha descendente
      */
     @Transactional(readOnly = true)
     public Page<PedidoDto> obtenerPedidosUsuario(UUID idUsuario, Pageable pageable) {
@@ -92,7 +100,10 @@ public class PedidoService {
     }
 
     /**
-     * Obtener un pedido específico por ID, verificando que pertenezca al usuario
+     * Obtiene un pedido específico verificando que pertenezca al usuario
+     * @param idPedido UUID del pedido a obtener
+     * @param idUsuario UUID del usuario propietario del pedido
+     * @return PedidoDto con información completa del pedido
      */
     @Transactional(readOnly = true)
     public PedidoDto obtenerPedidoPorId(UUID idPedido, UUID idUsuario) {
@@ -103,7 +114,10 @@ public class PedidoService {
     }
 
     /**
-     * Cancelar un pedido (solo si está en estado PENDIENTE)
+     * Cancela un pedido que esté en estado PENDIENTE
+     * @param idPedido UUID del pedido a cancelar
+     * @param idUsuario UUID del usuario propietario del pedido
+     * @return PedidoDto con el pedido cancelado
      */
     @Transactional
     public PedidoDto cancelarPedido(UUID idPedido, UUID idUsuario) {
@@ -121,7 +135,9 @@ public class PedidoService {
     }
 
     /**
-     * Calcular el total del pedido basado en los productos del carrito
+     * Calcula el total del pedido basado en los productos del carrito
+     * @param productosCarrito Lista de productos del carrito
+     * @return BigDecimal con el total calculado
      */
     private BigDecimal calcularTotal(List<CarritoProducto> productosCarrito) {
         return productosCarrito.stream()
@@ -130,7 +146,10 @@ public class PedidoService {
     }
 
     /**
-     * Actualizar estado de un pedido (para administradores)
+     * Actualiza el estado de un pedido (función administrativa)
+     * @param idPedido UUID del pedido a actualizar
+     * @param nuevoEstado Nuevo estado del pedido
+     * @return PedidoDto con el pedido actualizado
      */
     @Transactional
     public PedidoDto actualizarEstadoPedido(UUID idPedido, EstadoPedido nuevoEstado) {

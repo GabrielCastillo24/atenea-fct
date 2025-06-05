@@ -10,17 +10,22 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
-
+/**
+ * Controlador REST que gestiona todas las operaciones del carrito de compras
+ */
 @RestController
 @RequestMapping("/api/carrito")
 @RequiredArgsConstructor
 public class CarritoController {
-
+    // Servicio para la lógica del carrito
     private final CarritoService carritoService;
+    // Servicio para obtener información del usuario
     private final UsuarioService usuarioService;
 
     /**
      * Obtiene el carrito completo del usuario autenticado
+     * @param authentication Información del usuario autenticado
+     * @return CarritoDto con todos los productos y detalles del carrito
      */
     @GetMapping
     public ResponseEntity<CarritoDto> obtenerCarrito(Authentication authentication) {
@@ -35,6 +40,8 @@ public class CarritoController {
 
     /**
      * Obtiene el resumen del carrito (para header/navbar)
+     * @param authentication Información del usuario autenticado
+     * @return ResumenCarritoDto con información básica (cantidad total, precio)
      */
     @GetMapping("/resumen")
     public ResponseEntity<ResumenCarritoDto> obtenerResumenCarrito(Authentication authentication) {
@@ -49,6 +56,9 @@ public class CarritoController {
 
     /**
      * Agrega un producto al carrito
+     * @param dto Datos del producto a agregar (ID, cantidad, etc.)
+     * @param authentication Información del usuario autenticado
+     * @return CarritoDto actualizado después de agregar el producto
      */
     @PostMapping("/agregar")
     public ResponseEntity<CarritoDto> agregarProducto(
@@ -67,6 +77,10 @@ public class CarritoController {
 
     /**
      * Actualiza la cantidad de un producto en el carrito
+     * @param idProducto ID del producto a actualizar
+     * @param dto Nueva cantidad del producto
+     * @param authentication Información del usuario autenticado
+     * @return CarritoDto actualizado con la nueva cantidad
      */
     @PutMapping("/producto/{idProducto}/cantidad")
     public ResponseEntity<CarritoDto> actualizarCantidad(
@@ -85,7 +99,10 @@ public class CarritoController {
     }
 
     /**
-     * Elimina un producto del carrito usando path variable (alternativa)
+     * Elimina un producto del carrito usando path variable
+     * @param idProducto ID del producto a eliminar
+     * @param authentication Información del usuario autenticado
+     * @return CarritoDto actualizado después de eliminar el producto
      */
     @DeleteMapping("/quitar-producto/{idProducto}")
     public ResponseEntity<CarritoDto> eliminarProductoPorId(
@@ -104,6 +121,8 @@ public class CarritoController {
 
     /**
      * Vacía completamente el carrito
+     * @param authentication Información del usuario autenticado
+     * @return CarritoDto vacío después de eliminar todos los productos
      */
     @DeleteMapping("/vaciar")
     public ResponseEntity<CarritoDto> vaciarCarrito(Authentication authentication) {

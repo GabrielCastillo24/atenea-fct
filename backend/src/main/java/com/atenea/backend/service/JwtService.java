@@ -8,6 +8,9 @@ import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import java.time.Duration;
 import java.time.Instant;
 
+/**
+ * Servicio para generar tokens JWT
+ */
 @RequiredArgsConstructor
 public class JwtService {
 
@@ -17,6 +20,11 @@ public class JwtService {
 
     private final JwtEncoder jwtEncoder;
 
+    /**
+     * Genera un token JWT para el usuario especificado
+     * @param username Nombre de usuario (correo) para el cual generar el token
+     * @return String con el token JWT generado
+     */
     public String generateToken(final String username) {
         final var claimsSet = JwtClaimsSet.builder()
                 .subject(username)

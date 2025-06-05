@@ -16,6 +16,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Servicio para gestionar operaciones del carrito de compras
+ */
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -28,6 +31,8 @@ public class CarritoService {
 
     /**
      * Obtiene o crea un carrito para el usuario
+     * @param idUsuario UUID del usuario
+     * @return Carrito existente o nuevo carrito creado
      */
     private Carrito obtenerOCrearCarrito(UUID idUsuario) {
         return carritoRepository.findByIdUsuario(idUsuario)
@@ -38,7 +43,10 @@ public class CarritoService {
     }
 
     /**
-     * Agrega un producto al carrito
+     * Agrega un producto al carrito del usuario
+     * @param idUsuario UUID del usuario propietario del carrito
+     * @param dto DTO con información del producto a agregar
+     * @return CarritoDto con el carrito actualizado
      */
     public CarritoDto agregarProducto(UUID idUsuario, AgregarCarritoDto dto) {
         // Verificar que el producto existe
@@ -72,7 +80,11 @@ public class CarritoService {
     }
 
     /**
-     * Actualiza la cantidad de un producto en el carrito
+     * Actualiza la cantidad de un producto específico en el carrito
+     * @param idUsuario UUID del usuario propietario del carrito
+     * @param idProducto ID del producto a actualizar
+     * @param dto DTO con la nueva cantidad
+     * @return CarritoDto con el carrito actualizado
      */
     public CarritoDto actualizarCantidad(UUID idUsuario, Integer idProducto, ActualizarCantidadCarritoDto dto) {
         Carrito carrito = carritoRepository.findByIdUsuario(idUsuario)
@@ -91,7 +103,10 @@ public class CarritoService {
     }
 
     /**
-     * Elimina un producto del carrito por ID - SOLUCIÓN DEFINITIVA
+     * Elimina un producto específico del carrito
+     * @param idUsuario UUID del usuario propietario del carrito
+     * @param idProducto ID del producto a eliminar
+     * @return CarritoDto con el carrito actualizado
      */
     @Transactional
     public CarritoDto eliminarProducto(UUID idUsuario, Integer idProducto) {
@@ -112,7 +127,9 @@ public class CarritoService {
     }
 
     /**
-     * Vacía completamente el carrito
+     * Vacía completamente el carrito del usuario
+     * @param idUsuario UUID del usuario propietario del carrito
+     * @return CarritoDto con el carrito vacío
      */
     public CarritoDto vaciarCarrito(UUID idUsuario) {
         Carrito carrito = carritoRepository.findByIdUsuario(idUsuario)
@@ -132,7 +149,9 @@ public class CarritoService {
     }
 
     /**
-     * Obtiene el carrito completo del usuario
+     * Obtiene el carrito completo del usuario con todos sus productos
+     * @param idUsuario UUID del usuario propietario del carrito
+     * @return CarritoDto con información completa del carrito
      */
     @Transactional(readOnly = true)
     public CarritoDto obtenerCarrito(UUID idUsuario) {
@@ -143,7 +162,9 @@ public class CarritoService {
     }
 
     /**
-     * Obtiene el resumen del carrito (para header/navbar)
+     * Obtiene un resumen básico del carrito para mostrar en header/navbar
+     * @param idUsuario UUID del usuario propietario del carrito
+     * @return ResumenCarritoDto con información resumida del carrito
      */
     @Transactional(readOnly = true)
     public ResumenCarritoDto obtenerResumenCarrito(UUID idUsuario) {

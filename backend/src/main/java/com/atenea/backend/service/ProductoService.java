@@ -9,11 +9,18 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Servicio para gestionar operaciones de productos
+ */
 @Service
 @RequiredArgsConstructor
 public class ProductoService {
-    private  final ProductoRepository productoRepository;
+    private final ProductoRepository productoRepository;
 
+    /**
+     * Obtiene la lista completa de productos del sistema
+     * @return Lista de ProductosDto con todos los productos disponibles
+     */
     public List<ProductosDto> obtenerProductos() {
         List<Producto> productos = productoRepository.findAll();
 

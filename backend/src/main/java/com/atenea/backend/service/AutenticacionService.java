@@ -20,7 +20,9 @@ import java.time.Instant;
 import java.util.UUID;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
-
+/**
+ * Servicio para gestionar la autenticación y tokens de usuario
+ */
 @Service
 @RequiredArgsConstructor
 public class AutenticacionService {
@@ -32,6 +34,11 @@ public class AutenticacionService {
     private final UsuarioRepository usuarioRepository;
     private final RefreshTokenRepository refreshTokenRepository;
 
+    /**
+     * Autentica un usuario y genera tokens de acceso y refresh
+     * @param request DTO con credenciales de usuario (correo y contraseña)
+     * @return AutenticacionResponseDto con token JWT y refresh token ID
+     */
     public AutenticacionResponseDto autenticarUsuario(
             final AutenticacionRequestDto request) {
 
@@ -56,6 +63,11 @@ public class AutenticacionService {
         return new AutenticacionResponseDto(authToken, refreshToken.getId());
     }
 
+    /**
+     * Renueva un token de acceso usando un refresh token válido
+     * @param refreshToken UUID del refresh token a validar
+     * @return AutenticacionResponseDto con nuevo token JWT y mismo refresh token ID
+     */
     public AutenticacionResponseDto renovarToken(UUID refreshToken) {
         final var refreshTokenEntity = refreshTokenRepository
                 .findByIdAndExpiracionAfter(refreshToken, Instant.now())
@@ -66,6 +78,10 @@ public class AutenticacionService {
         return new AutenticacionResponseDto(newAuthToken, refreshToken);
     }
 
+    /**
+     * Revoca un refresh token eliminándolo de la base de datos
+     * @param refreshToken UUID del refresh token a revocar
+     */
     public void revocarRefreshToken(UUID refreshToken) {
         refreshTokenRepository.deleteById(refreshToken);
     }

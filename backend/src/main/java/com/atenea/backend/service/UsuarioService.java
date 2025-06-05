@@ -8,10 +8,19 @@ import org.springframework.web.server.ResponseStatusException;
 
 import static org.springframework.http.HttpStatus.GONE;
 
+/**
+ * Servicio para gestionar operaciones de usuarios
+ */
 @Service
 @RequiredArgsConstructor
 public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
+
+    /**
+     * Obtiene un usuario por su correo electrónico
+     * @param correo Correo electrónico del usuario a buscar
+     * @return Usuario encontrado
+     */
     public Usuario getUserByCorreo(final String correo) {
         return usuarioRepository.findByCorreo(correo)
                 .orElseThrow(() -> new ResponseStatusException(GONE,

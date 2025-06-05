@@ -13,6 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Servicio para gestionar el registro de nuevos usuarios
+ */
 @Service
 @RequiredArgsConstructor
 public class RegistroUsuarioService {
@@ -20,6 +23,11 @@ public class RegistroUsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
 
+    /**
+     * Registra un nuevo usuario en el sistema con carrito asociado
+     * @param usuario Datos del usuario a registrar
+     * @return Usuario registrado con contraseña encriptada
+     */
     @Transactional
     public Usuario registroUsuario(Usuario usuario) {
         if (usuarioRepository.existsByCorreo(usuario.getCorreo())) {

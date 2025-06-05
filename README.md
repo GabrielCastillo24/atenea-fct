@@ -54,6 +54,18 @@ Desarrollado por [Gabriel Antonio Castillo Linares ](https://github.com/GabrielC
 ---
 ## 🚀 Instalación y Uso
 
-1. Clona el repositorio:
+1. Clonar el repositorio con Git:
    ```bash
    git clone https://github.com/GabrielCastillo24/atenea-fct
+   ```
+2. Verificar que Docker esté instalado y en dado caso instalarlo.
+   ```bash
+   docker version
+   ```
+3. Crear la carpeta de la BBDD y arrancar el proyecto usando el fichero docker-compose.yml en la raíz del repositorio
+   ```bash
+   cd atenea-fct
+   mkdir mariadb_data
+   docker compose up
+   ```
+4. Acceder al servidor web desde http://localhost:8081

@@ -12,15 +12,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Controlador REST que gestiona el registro de nuevos usuarios
+ */
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class RegistroController {
-
+    // Servicio para la lógica de registro de usuarios
     private final RegistroUsuarioService registroUsuarioService;
-
+    // Mapper para convertir DTOs a entidades y viceversa
     private final UsuarioRegistroMapper usuarioRegistroMapper;
-
+    /**
+     * Registra un nuevo usuario en el sistema
+     * @param registroRequestDto Datos del usuario a registrar (nombre, correo, contraseña, etc.)
+     * @return RegistroResponseDto con la información del usuario registrado
+     */
     @PostMapping("/registro")
     public ResponseEntity<RegistroResponseDto> registrarUsuario(
             @Valid @RequestBody final RegistroRequestDto registroRequestDto) {
